@@ -111,7 +111,7 @@ var obj = {
     foo:foo
 }
 
-bar(obj.foo)   ///   预编译的过程中,实参被赋值给形参(值的拷贝过程,浅拷贝)     其中实参就是foo这个函数  将这个函数传入bar函数内部  并直接调...   那么foo中的this指向就是window
+bar(obj.foo)   ///   预编译的过程中,实参被赋值给形参(值的拷贝过程,浅拷贝)     其中实参就是foo这个函数  将这个函数传入bar函数内部  并独立调用执行...   那么foo中的this指向就是window
 ```
 
 ` 父函数有能力决定子函数的this指向`
@@ -124,7 +124,7 @@ bar(obj.foo)   ///   预编译的过程中,实参被赋值给形参(值的拷贝
   function Person(){
   
    this.a = 1;
-      // return {};         // 如果返回值为引用类型的   则实例化之后的this指向这个引用类型数据
+      // return {};         // 如果返回值为引用类型的   则实例化之后的this指向这个引用类型数据,    如果是值类型的数据,则不影响this的变化
   }
    var person = new Person();
   console.log(person);    //  如果默认的话  Person中的this指向这个实例化对象person
@@ -160,7 +160,14 @@ bar(obj.foo)   ///   预编译的过程中,实参被赋值给形参(值的拷贝
   // 上面四句代码执行结果一致     且this都指向obj
   ```
 
-  
+  * 显式绑定三种之间的区别
+    * Function.prototype.call()
+      * `call()` 方法使用一个指定的 `this` 值和单独给出的一个或多个参数来调用一个函数。调用者this指向call中第一个参数
+    * Function.prototype.apply()
+      * **`apply()`** 方法调用一个具有给定`this`值的函数，以及作为一个数组（或[类似数组对象](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Indexed_collections#Working_with_array-like_objects)）提供的参数。 调用者this指向apply中第一个参数
+    * Function.prototype.bind()     
+      * `bind()` 方法创建一个新的函数，在 `bind()` 被调用时，这个新函数的 `this` 被指定为 `bind()`的第一个参数，而其余参数将作为新函数的参数，供调用时使用。
+      * ![image-20200829200502466](C:\Users\L\AppData\Roaming\Typora\typora-user-images\image-20200829200502466.png)
 
 
 
@@ -179,6 +186,8 @@ bar(obj.foo)   ///   预编译的过程中,实参被赋值给形参(值的拷贝
 
 
 ### 作用域
+
+**在 JavaScript 中, 作用域为可访问变量，对象，函数的集合。**
 
 每个函数都有自己的执行环境,  当执行流入下一个函数时,函数的环境就会被推入一个环境栈中.而在函数执行之后,栈将其环境弹出,把控制权返回给之前的执行环境.....
 
