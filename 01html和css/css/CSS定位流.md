@@ -1,7 +1,7 @@
 ### css定位流
 
 1. 定位流分类
-   * 相对定位 position:relactive;
+   * 相对定位 position:relative;
    * 绝对定位  position:absolute;
    * 固定定位  position:fixed;
    * 静态定位  position:static;

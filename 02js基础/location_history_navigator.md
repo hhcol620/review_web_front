@@ -23,3 +23,5 @@ window.history 对象包含浏览器的历史
 #### navigator
 
 window.navigator 对象包含有关访问者浏览器的信息
+
+document.referrer   返回跳转到此页面的上一级页面地址
