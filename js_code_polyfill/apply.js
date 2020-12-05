@@ -27,3 +27,15 @@ var array = ['a', 'b']
 var elements = [0, 1, 2]
 array.push.apply(array, elements)
 console.info(array) // ["a", "b", 0, 1, 2]
+
+Function.prototype.apply = function (context = window, args) {
+  if (typeof this !== 'function') {
+    throw new TypeError('caller is not Function')
+  }
+  // 这个操作就是将this这个方法添加到context上
+  const fn = Symbol('fn')
+  context[fn] = this
+  const res = context[fn](...args)
+  delete context[fn]
+  return res
+}

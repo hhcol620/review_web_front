@@ -28,8 +28,9 @@
   
 * NaN是什么类型
   * 答案是number
-  * ![image-20200825221216210](C:\Users\L\AppData\Roaming\Typora\typora-user-images\image-20200825221216210.png)
-
+  * ![image-20201029174110211](F:\学习笔记\review_web_front\images\image-20201029174110211.png)
+* ![image-20200825221216210](C:\Users\L\AppData\Roaming\Typora\typora-user-images\image-20200825221216210.png)
+  
 * class函数里面的super什么作用
   * ES6里面一个语法,class语法使原型的写法更加清晰,更加像面向对象编程的语法..
   
@@ -187,7 +188,7 @@
     * DOM2事件监听
       * 语法
         * 元素.addEventListener(事件行为比如click,function(){},false/true)     //第三个参数默认为false   第三个参数表示事件在哪个阶段执行  事件捕获  目标阶段 事件冒泡
-        * IE6~8中  元素.attachEvent('on事件行为',function(){})
+        * IE6~8中  元素.attachEvent('on事f件行为',function(){})
       * 原理
         * 基于原型链查找机制,找到EventTarget.prototype上的方法并且执行,此方法执行,会把当前元素某个事件行为绑定的所有方法,存放到浏览器默认的事件池中(绑定几个方法,会向事件池存储几个)
         * 当事件行为触发,会把事件池中存储的对应方法,依次按照顺序执行,(给当前元素某一个事件行为绑定的多个不同的方法)
@@ -195,5 +196,5 @@
 * ES5和ES6继承有什么区别????
 
   * ES5继承的实质是创造子类的实例对象this,然后再将父类的方法添加到this上面(` Parent.apply(this)`)
-  * ES6继承的实质是先创造父类实例对象this(所以必须先调用super方法),然后再用子类的构造函数修改this
+  * ES6继承的实质是**要求子类的构造函数必须执行一次super函数   super虽然代表了父类的构造函数,但是返回的是子类的实例**
 

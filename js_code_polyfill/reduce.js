@@ -23,7 +23,7 @@ Array.prototype.reduce = function (reducer, initVal = 0) {
   }
   let len = this.length
   let acc = this[0] || 0
-  // 标识调用者数组长度大于2
+  // 表示调用者数组长度大于2
   for (let i = 1; i < len; i++) {
     acc = reducer(acc, this[i], i, this)
   }
