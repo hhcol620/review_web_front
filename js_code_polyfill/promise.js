@@ -194,7 +194,7 @@ class Scheduler {
         this.queue
             .shift()()
             .then(() => {
-                this.queue.runCounts--;
+                this.runCounts--;
                 this.request();
             });
     }
