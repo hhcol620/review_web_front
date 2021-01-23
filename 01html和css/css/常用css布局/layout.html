@@ -33,7 +33,7 @@
         } */
 
 
-        /* body,
+        body,
         html,
         .container {
             height: 100px;
@@ -45,6 +45,7 @@
             float: left;
             position: relative;
         }
+
         .container {
             padding: 0 200px 0 100px;
         }
@@ -56,6 +57,7 @@
             background: #ff69b4;
             height: 100%;
         }
+
         .right {
             width: 200px;
             margin-left: -200px;
@@ -63,15 +65,16 @@
             background: #ff69b4;
             height: 100%;
         }
+
         .main {
             width: 100%;
             height: 100%;
             background: #659;
-        } */
+        }
 
 
 
-        body,
+        /* body,
         html,
         .container {
             height: 100px;
@@ -80,7 +83,6 @@
         }
 
         .col {
-            /* 把left和right定位到左右部分 */
             float: left;
         }
 
@@ -91,7 +93,6 @@
         }
 
         .main_inner {
-            /* 处理中间栏的内容被遮盖问题 */
             margin: 0 200px 0 100px;
         }
 
@@ -107,7 +108,7 @@
             height: 100%;
             width: 200px;
             background: #ff69b4;
-        }
+        } */
     </style>
 </head>
 <body>
@@ -118,19 +119,19 @@
         <div class="middle">middle</div>
     </div> -->
     <!-- 圣杯布局 左右定宽 中间自适应 -->
-    <!-- <div class="container">
+    <div class="container">
         <div class="main col">Main</div>
         <div class="left col">Left</div>
         <div class="right col">Right</div>
-    </div> -->
+    </div>
 
-
-    <div class="container">
+    <!-- 双飞翼布局 -->
+    <!-- <div class="container">
         <div class="main col">
             <div class="main_inner">Main</div>
         </div>
         <div class="left col">Left</div>
         <div class="right col">Right</div>
-    </div>
+    </div> -->
 </body>
 </html>

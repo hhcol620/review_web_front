@@ -154,7 +154,6 @@ Promise.race = function (promiseArr) {
     return new Promise((resolve, reject) => {
         promiseArr.forEach((p) => {
             // 一旦有一个Promise已经resolve或者是reject那么就使用
-            //
 
             // 如果不是Promise实例需要转化为Promise实例
             Promise.resolve(p).then(
