@@ -1,31 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
 </head>
 <body>
-  <script id="test" type="text/xml">
-    <div>{{data.title}}nnnnn{{data.name}}---{{data.time}}</div>
-  </script>
+    <script id="test" type="text/xml">
+        <div>{{data.title}}nnnnn{{data.name}}---{{data.time}}</div>
+    </script>
 
-  <script>
-    let data = {
-      title:'这是标题',
-      name:'这是name',
-      time:'这是time'
-    }
-    let dom = document.querySelector("#test")
-    // console.log(dom.innerHTML);
-    let str = dom.innerHTML
-    let res = str.replace(/\{\{([\w\.]*)\}\}/g, function (...args) {
-        console.log(args[1].split('.')[0][args[1].split('.')[1]]);
-        let obj = args[1].split('.')[0]
-        let item = args[1].split('.')[1]
-        return data[item]
-    })
-    console.log(res)
-  </script>
+    <script>
+        let data = {
+            title: '这是标题',
+            name: '这是name',
+            time: '这是time'
+        }
+        let dom = document.querySelector("#test")
+        // console.log(dom.innerHTML);
+        let str = dom.innerHTML
+        let res = str.replace(/\{\{([\w\.]*)\}\}/g, function(...args) {
+            // console.log(args[1].split('.')[0][args[1].split('.')[1]]);
+            // let obj = args[1].split('.')[0]
+            let item = args[1].split('.')[1]
+            console.log(item);
+            return data[item]
+        })
+        console.log(res)
+    </script>
 </body>
 </html>

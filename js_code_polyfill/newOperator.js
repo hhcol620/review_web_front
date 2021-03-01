@@ -10,12 +10,25 @@
  */
 
 function newOperator(ctor, ...args) {
-  if (typeof ctor !== 'function') {
-    throw new TypeError(ctor + 'is not function')
-  }
-  const obj = Object.create(ctor.prototype)
-  const res = ctor.apply(obj, args)
-  const isObject = typeof res === 'object' && res !== null
-  const isFunc = typeof res === 'function'
-  return isObject || isFunc ? res : obj
+    if (typeof ctor !== 'function') {
+        throw new TypeError(ctor + 'is not function');
+    }
+    const obj = Object.create(ctor.prototype);
+    const res = ctor.apply(obj, args);
+    const isObject = typeof res === 'object' && res !== null;
+    const isFunc = typeof res === 'function';
+    return isObject || isFunc ? res : obj;
+}
+
+//
+
+function newOperator(ctor, ...args) {
+    if (typeof ctor !== 'function') {
+        throw new TypeError(ctor + 'is not function');
+    }
+    const obj = Object.create(ctor.prototype);
+    const res = ctor.apply(obj, args);
+    const isObject = typeof res === 'object' && res !== null;
+    const isFunc = typeof res === 'function';
+    return isObject || isFunc ? res : obj;
 }
