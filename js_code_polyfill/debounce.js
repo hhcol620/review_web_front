@@ -9,6 +9,8 @@ debounce = (fn, wait = 300) => {
     };
 };
 
+function debounce(fn, wait = 300) {}
+
 // 需要防抖的方法
 function test() {
     console.log('ok1');
