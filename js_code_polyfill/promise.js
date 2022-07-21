@@ -20,21 +20,29 @@ class Promise {
         this.onRejectedCallbacks = [];
 
         const resolve = (value) => {
-            // 只有进行中的状态才能更改状态
-            if (this.status === PENDING) {
-                this.status = FULFILLED;
-                this.value = value;
-                this.onFulfilledCallbacks.forEach((fn) => fn(this.value));
+            const _run = () => {
+                // 只有进行中的状态才能更改状态
+                if (this.status === PENDING) {
+                    this.status = FULFILLED;
+                    this.value = value;
+                    this.onFulfilledCallbacks.forEach((fn) => fn(this.value));
+                }
             }
+            // 兼容同步任务，先收集.then 里面的回调
+            setTimeout(_run);
         };
         const reject = (reason) => {
             // 只有进行中状态才能更改状态
-            if (this.status === PENDING) {
-                this.status = REJECTED;
-                this.reason = reason;
-                // 失败态函数一次执行
-                this.onRejectedCallbacks.forEach((fn) => fn(this.reason));
+            const _run = () => {
+                if (this.status === PENDING) {
+                    this.status = REJECTED;
+                    this.reason = reason;
+                    // 失败态函数一次执行
+                    this.onRejectedCallbacks.forEach((fn) => fn(this.reason));
+                }
             }
+            // 兼容同步任务
+            setTimeout(_run, 0);
         };
         try {
             // 立即执行executor
@@ -45,74 +53,46 @@ class Promise {
         }
     }
     then(onFulfilled, onRejected) {
+        // 值穿透
         onFulfilled =
             typeof onFulfilled === 'function' ? onFulfilled : (value) => value;
         onRejected =
-            typeof onRejected === 'function'
-                ? onRejected
-                : (reason) => {
-                      throw new TypeError(
-                          reason instanceof Error ? this.reason.message : reason
-                      );
-                  };
+            typeof onRejected === 'function' ?
+            onRejected :
+            (reason) => {
+                throw new TypeError(
+                    reason instanceof Error ? this.reason.message : reason
+                );
+            };
         const self = this;
         return new Promise((resolve, reject) => {
+            const fulfilledFn = (value) => {
+                try {
+                    const res = onFulfilled();
+                    res instanceof Promise ? res.then(resolve, reject) : res;
+                } catch (err) {
+                    reject(err)
+                }
+            }
+            const rejectedFn = (reason) => {
+                try {
+                    let x = onRejected(error)
+                    x instanceof MyPromise ? x.then(resolve, reject) : resolve(x)
+                } catch (error) {
+                    reject(error)
+                }
+            }
             if (self.status === PENDING) {
-                self.onFulfilledCallbacks.push(() => {
-                    // try...catch捕获错误
-                    try {
-                        // 模拟微任务
-                        setTimeout(() => {
-                            const result = onFulfilled(self.value);
-                            // 分两种情况
-                            // 1 回调函数返回值是promise 执行then操作
-                            // 2 如果不是promise 调用promise的resolve
-                            result instanceof Promise
-                                ? result.then(resolve, reject)
-                                : resolve(result);
-                        });
-                    } catch (e) {
-                        reject(e);
-                    }
-                });
-                self.onRejectedCallbacks.push(() => {
-                    try {
-                        setTimeout(() => {
-                            const result = onRejected(self.reason);
-                            result instanceof Promise
-                                ? result.then(resolve, reject)
-                                : reject(result);
-                        });
-                    } catch (e) {
-                        reject(e);
-                    }
-                });
+                this.onFulfilledCallbacks.push(fulfilledFn)
+                this.onRejectedCallbacks.push(rejectedFn)
             } else if (self.status === FULFILLED) {
-                try {
-                    setTimeout(() => {
-                        const result = onFulfilled(self.value);
-                        result instanceof Promise
-                            ? result.then(resolve, reject)
-                            : resolve(result);
-                    });
-                } catch (e) {
-                    reject(e);
-                }
+                fulfilledFn(this.value)
             } else if (self.status === REJECTED) {
-                try {
-                    setTimeout(() => {
-                        const result = onRejected(self.reason);
-                        result instanceof Promise
-                            ? result.then(resolve, reject)
-                            : reject(result);
-                    });
-                } catch (e) {
-                    reject(e);
-                }
+                rejectedFn(this.reason)
             }
         });
     }
-    catch(onRejected) {
+    catch (onRejected) {
         return this.then(null, onRejected);
     }
     static resolve(value) {
@@ -133,14 +113,14 @@ class Promise {
 Promise.myAll = function (promiseArr) {
     return new Promise((resolve, reject) => {
         const ans = [];
-        let index = 0;
+        let count = 0;
         for (let i = 0; i < promiseArr.length; i++) {
             // 每一个promise之间基本可以看作是异步执行 (同时开始)
             promiseArr[i]
                 .then((res) => {
                     ans[i] = res; // 将返回的promise进行保存
-                    index++;
-                    if (index === promiseArr.length) {
+                    count++;
+                    if (count === promiseArr.length) {
                         resolve(ans);
                     }
                 })

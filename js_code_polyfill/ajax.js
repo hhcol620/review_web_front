@@ -60,7 +60,7 @@ const getJson = function (url) {
             if (xhr.status === 200 || xhr.status === 304) {
                 resolve(xhr.reponseText);
             } else {
-                reject(new Error(x hr.reponseText));
+                reject(new Error(xhr.reponseText));
             }
         };
     });
