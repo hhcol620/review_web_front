@@ -6,8 +6,7 @@
 
 ### 更新过程
 
-​    1.   修改data,触发setter(在初次渲染的时候 getter中已被监听)
-
+1. 修改data,触发setter(在初次渲染的时候 getter中已被监听)
 2. 重新执行render函数,生成newVnode
 3. patch(vnode,newVnode)
 

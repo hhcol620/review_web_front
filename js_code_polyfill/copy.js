@@ -1,11 +1,11 @@
-//  JSON.stringify(JSON.parse())  深拷贝
+// JSON.stringify(JSON.parse())  深拷贝
 // 不能处理undefined 函数  循环引用  (正则好像也是不能处理的会把正则处理为''空字符串)
 
 // 手写一个clone
 
 function clone(obj) {
     if (obj === null) return null;
-    if (typeof obj != 'object') return obj;
+    if (typeof obj !== 'object') return obj;
     if (obj.constructor === Date) return new Date(obj);
     if (obj.constructor === RegExp) return new RegExp(obj);
     var newObj = new obj.constructor(); //保持继承的原型

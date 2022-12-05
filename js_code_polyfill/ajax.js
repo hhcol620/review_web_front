@@ -49,7 +49,7 @@ const getJson = function (url) {
 };
 
 const getJson = function (url) {
-    return new Promise((resolve, reject) => {
+    new Promise((resolve, reject) => {
         const xhr = XMLHttpRequest
             ? new XMLHttpRequest()
             : new ActiveXObject('Mscrosoft.XMLHttp');
