@@ -10,11 +10,11 @@ const jsonP = ({ url, params, callbackName }) => {
         let dataSrc = '';
         for (let key in params) {
             if (Object.prototype.hasOwnProperty.call(params, key)) {
-                dataSrc += `${key}=${params[key]}`;
+                dataSrc += `${key}=${params[key]}&`;
             }
         }
         // 拼接callbackName
-        dataSrc += `callback=${callbackName}`;
+        dataSrc += `callback=${callbackName}&`;
         return `${url}?${dataSrc}`;
     };
     return new Promise((resolve, reject) => {
@@ -30,28 +30,28 @@ const jsonP = ({ url, params, callbackName }) => {
     });
 };
 
-const jsonP = ({ url, params, callbackName }) => {
-    // 拼接url
-    const generateUrl = () => {
-        let dataSrc = '';
-        for (let key in params) {
-            if (Object.prototype.hasOwnProperty.call(params, key)) {
-                dataSrc += `${key}=${params[key]}`;
-            }
-        }
-        // 拼接callbackName
-        dataSrc += `callback=${callbackName}`;
-        return `${url}?${dataSrc}`;
-    };
-    return new Promise((resolve, reject) => {
-        // 请求是异步的  使用promise
-        const scriptEle = document.createElement('script');
-        scriptEle.src = generateUrl();
-        // 定义事件需要在挂载之前
-        window[callbackName] = (data) => {
-            resolve(data);
-            document.removeChild(scriptEle);
-        };
-        document.body.appendChild(scriptEle);
-    });
-};
+// const jsonP = ({ url, params, callbackName }) => {
+//     // 拼接url
+//     const generateUrl = () => {
+//         let dataSrc = '';
+//         for (let key in params) {
+//             if (Object.prototype.hasOwnProperty.call(params, key)) {
+//                 dataSrc += `${key}=${params[key]}`;
+//             }
+//         }
+//         // 拼接callbackName
+//         dataSrc += `callback=${callbackName}`;
+//         return `${url}?${dataSrc}`;
+//     };
+//     return new Promise((resolve, reject) => {
+//         // 请求是异步的  使用promise
+//         const scriptEle = document.createElement('script');
+//         scriptEle.src = generateUrl();
+//         // 定义事件需要在挂载之前
+//         window[callbackName] = (data) => {
+//             resolve(data);
+//             document.removeChild(scriptEle);
+//         };
+//         document.body.appendChild(scriptEle);
+//     });
+// };
