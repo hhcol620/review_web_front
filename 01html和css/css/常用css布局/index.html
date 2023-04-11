@@ -1,123 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <!-- <style>
+      .container {
+        height: 300px;
+        border: 1px solid #333;
+      }
+      .left {
+        width: 200px;
+        height: 100%;
+        background-color: #eee;
+        float: left;
+      }
+      .right {
+        width: 200px;
+        height: 100%;
+        background-color: #ddd;
+        float: right;
+      }
+
+      .middle {
+        margin: 0 200px;
+        height: 100%;
+        background-color: #4d4d4d;
+      }
+    </style> -->
+
     <style>
-        /* .box {
-            display: flex;
-            color: #fff;
-        }
+      .container {
+        height: 300px;
+        border: 1px solid #333;
+        position: relative;
+      }
+      .left {
+        width: 200px;
+        height: 100%;
+        background-color: rgb(117, 116, 116);
+        position: absolute;
+        left: 0;
+      }
+      .right {
+        width: 200px;
+        height: 100%;
+        background-color: #ddd;
+        position: absolute;
+        right: 0;
+      }
 
-        .right {
-            width: 500px;
-            background-color: #2ecc71;
-        }
-
-        .left {
-            width: 100px;
-            background-color: #9b59b6;
-        } */
-
-
-        /* .box {
-            overflow: hidden;
-            color: #fff;
-        }
-
-        .left {
-            float: left;
-            width: 100px;
-            background-color: #9b59b6;
-            margin-bottom: -999px;
-            padding-bottom: 999px;
-        }
-
-        .right {
-            margin-left: 100px;
-            width: 500px;
-            background-color: #2ecc71;
-            margin-bottom: -999px;
-            padding-bottom: 999px;
-        } */
-        /* .box {
-            color: #fff;
-            display: table;
-        }
-
-        .left {
-            width: 100px;
-            background-color: #1abc9c;
-            display: table-cell;
-        }
-
-        .right {
-            width: 500px;
-            background-color: #2ecc71;
-            display: table-cell;
-        } */
-
-        /* 两列布局 左侧定宽 */
-        /* .box {
-            display: flex;
-        }
-
-        .left {
-            width: 300px;
-            
-        }
-
-        .right {
-            flex: 1;
-        } */
-
-        /* .box {
-            margin-bottom: 100px;
-            border-bottom: 1px solid red;
-        }
-
-        .box:after {
-            content: '';
-            display: block;
-            clear: both;
-            *zoom: 1;
-        }
-
-        .left {
-            float: left;
-            width: 300px;
-        }
-
-        .right {
-            float: left;
-            width: 300px;
-        }
-
-        .wall {
-            clear: both;
-            height: 100px;
-            background-color: #330999;
-        }
-
-        .bottom {
-            margin-top: 100px;
-        }
-
-         */
+      .middle {
+        width: 100%;
+        height: 100%;
+        background-color: #4d4d4d;
+        margin: 0 200px;
+      }
     </style>
-</head>
-<body>
-    <!-- <div class="box">
-        <div class="left">
-            这是文字这是文字这是文字这是文字这是文字这是文字测试
-        </div>
-        <div class="right">
-            这是文字这是文字这是文字这是文字这是文字这是文字测试这是文字这是文字这是文字这是文字这是文字这是文字测试这是文字这是文字这是文字这是文字这是文字这是文字测试这是文字这是文字这是文字这是文字这是文字这是文字测试这是文字这是文字这是文字这是文字这是文字这是文字测试这是文字这是文字这是文字这是文字这是文字这是文字测试这是文字这是文字这是文字这是文字这是文字这是文字测试这是文字这是文字这是文字这是文字这是文字这是文字测试
-        </div>
+  </head>
+  <body>
+    <div class="container">
+      <div class="left"></div>
+      <div class="right"></div>
+      <div class="middle"></div>
     </div>
-    <div class="wall"></div>
-    <div class="bottom">测试盒子</div> -->
-</body>
+  </body>
 </html>
