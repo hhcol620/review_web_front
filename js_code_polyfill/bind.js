@@ -9,7 +9,7 @@ Function.prototype.bind = function (context, ...args) {
     }
     let self = this; // 这个指向调用者-方法
 
-    return function F(...argss) {
+    return function F(...argss) { 
         if (this instanceof F) {
             return new self(...args, ...argss);
         }

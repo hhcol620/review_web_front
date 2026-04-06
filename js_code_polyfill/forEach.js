@@ -1,6 +1,5 @@
 /**
  * Array.prototype.forEach(callback,thisArg)
- * 方法的作用是将数组中每一项传入callback中并将执行结果放入到一个数组中 return出来
  * 慎用箭头函数
  */
 
