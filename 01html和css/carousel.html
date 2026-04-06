@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>轮播组件</title>
+    <style>
+      /* ===== 外层容器：固定尺寸，裁剪溢出内容 ===== */
+      .carousel {
+        position: relative;
+        width: 400px;
+        height: 200px;
+        overflow: hidden; /* 关键：超出部分不可见，实现"只露一张"的效果 */
+      }
+
+      /* ===== 滑动轨道：所有卡片横向排成一排 ===== */
+      .track {
+        display: flex;
+        height: 100%;
+        transition: transform 0.4s ease; /* 切换时的滑动动画 */
+      }
+
+      /* ===== 每张卡片：宽度与容器相同，不允许收缩 ===== */
+      .slide {
+        min-width: 400px; /* 与容器等宽，确保每次只露一张 */
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        color: white;
+      }
+
+      .slide:nth-child(1) { background-color: #4f8ef7; }
+      .slide:nth-child(2) { background-color: #f7744f; }
+      .slide:nth-child(3) { background-color: #4fc87f; }
+      .slide:nth-child(4) { background-color: #c84fc8; }
+      .slide:nth-child(5) { background-color: #f7c74f; }
+
+      /* ===== 左右箭头按钮 ===== */
+      .btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0, 0, 0, 0.4);
+        color: white;
+        border: none;
+        padding: 8px 14px;
+        cursor: pointer;
+        font-size: 1.2rem;
+        border-radius: 4px;
+        z-index: 10;
+      }
+      .btn-prev { left: 8px; }
+      .btn-next { right: 8px; }
+
+      /* ===== 底部指示点 ===== */
+      .dots {
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 8px;
+      }
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.5);
+        cursor: pointer;
+        transition: background 0.3s;
+      }
+      .dot.active {
+        background: white; /* 当前页的点高亮 */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="carousel">
+      <!-- 滑动轨道 -->
+      <div class="track" id="track">
+        <div class="slide">第 1 张</div>
+        <div class="slide">第 2 张</div>
+        <div class="slide">第 3 张</div>
+        <div class="slide">第 4 张</div>
+        <div class="slide">第 5 张</div>
+      </div>
+
+      <!-- 左右按钮 -->
+      <button class="btn btn-prev" id="btnPrev">&#8249;</button>
+      <button class="btn btn-next" id="btnNext">&#8250;</button>
+
+      <!-- 指示点 -->
+      <div class="dots" id="dots"></div>
+    </div>
+
+    <script>
+      const track = document.getElementById('track');
+      const dotsContainer = document.getElementById('dots');
+      const slides = document.querySelectorAll('.slide');
+      const total = slides.length;
+      let current = 0;       // 当前显示的索引
+      let timer = null;      // 自动播放定时器
+
+      // ── 1. 动态生成指示点 ──
+      slides.forEach((_, i) => {
+        const dot = document.createElement('div');
+        dot.className = 'dot' + (i === 0 ? ' active' : '');
+        dot.addEventListener('click', () => goTo(i));  // 点击跳转
+        dotsContainer.appendChild(dot);
+      });
+
+      // ── 2. 核心：切换到第 index 张 ──
+      function goTo(index) {
+        // 边界处理：实现循环
+        if (index < 0) index = total - 1;
+        if (index >= total) index = 0;
+
+        current = index;
+
+        // translateX 负值 = 向左移动轨道，露出对应的卡片
+        // 例如 index=1 时移动 -400px，第2张进入视野
+        track.style.transform = `translateX(${-current * 400}px)`;
+
+        // 更新指示点状态
+        document.querySelectorAll('.dot').forEach((dot, i) => {
+          dot.classList.toggle('active', i === current);
+        });
+      }
+
+      // ── 3. 按钮点击事件 ──
+      document.getElementById('btnPrev').addEventListener('click', () => {
+        goTo(current - 1);
+        resetTimer(); // 手动切换后重置自动播放计时
+      });
+      document.getElementById('btnNext').addEventListener('click', () => {
+        goTo(current + 1);
+        resetTimer();
+      });
+
+      // ── 4. 自动播放 ──
+      function startTimer() {
+        timer = setInterval(() => goTo(current + 1), 2000);
+      }
+      function resetTimer() {
+        clearInterval(timer);
+        startTimer();
+      }
+
+      startTimer(); // 启动自动播放
+    </script>
+  </body>
+</html>
