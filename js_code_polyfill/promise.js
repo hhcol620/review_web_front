@@ -126,72 +126,69 @@ class Promise {
     let count = 0;
     return new Promise((resolve, reject) => {
       promises.forEach((pro, idx) => {
-        pro.then((res) => {
-          count++;
-          result[idx] = res;
+        Promise.resolve(pro)
+          .then((res) => {
+            count++;
+            result[idx] = res;
 
-          if(count === promises.length) {
-            resolve(result);
-          }
-        }).catch((err) => reject(err));
-      })
-    })
+            if (count === promises.length) {
+              resolve(result);
+            }
+          })
+          .catch((err) => reject(err));
+      });
+    });
   }
 
   static race(promises) {
     return new Promise((resolve, reject) => {
       promises.forEach((pro) => {
         Promise.resolve(pro).then(resolve).catch(reject);
-      })
-    })
+      });
+    });
   }
 }
-
 
 // Promise并行限制  实现有并发限制的Promise调度器问题
 /** 高频面试题 实现有并发限制的Promise调度器 */
 
 class Scheduler {
-    constructor() {
-        this.queue = [];
-        this.maxCount = 2;
-        this.runCounts = 0;
+  constructor() {
+    this.queue = [];
+    this.maxCount = 2;
+    this.runCounts = 0;
+  }
+  add(promiseCreator) {
+    this.queue.push(promiseCreator);
+  }
+  taskStart() {
+    for (let i = 0; i < this.maxCount; i++) {
+      this.request();
     }
-    add(promiseCreator) {
-        this.queue.push(promiseCreator);
+  }
+  request() {
+    if (!this.queue || !this.queue.length || this.runCounts >= this.maxCount) {
+      return;
     }
-    taskStart() {
-        for (let i = 0; i < this.maxCount; i++) {
-            this.request();
-        }
-    }
-    request() {
-        if (
-            !this.queue ||
-            !this.queue.length ||
-            this.runCounts >= this.maxCount
-        ) {
-            return;
-        }
-        this.runCounts++;
-        this.queue
-            .shift()()
-            .then(() => {
-                this.runCounts--;
-                this.request();
-            });
-    }
+    this.runCounts++;
+    this.queue
+      .shift()()
+      .then(() => {
+        this.runCounts--;
+        this.request();
+      });
+  }
 }
 
 const timeout = (time) =>
-    new Promise((resolve) => {
-        setTimeout(resolve, time);
-    });
+  new Promise((resolve) => {
+    setTimeout(resolve, time);
+  });
 
 const scheduler = new Scheduler();
 
 const addTask = (time, order) => {
-    scheduler.add(() => timeout(time).then(() => console.log(order)));
+  scheduler.add(() => timeout(time).then(() => console.log(order)));
 };
 
 addTask(1000, '1');
@@ -200,3 +197,49 @@ addTask(300, '3');
 addTask(400, '4');
 
 scheduler.taskStart();
+
+
+// ─────────────────────────────────────────────
+// Scheduler2：优化版并发调度器
+// 优化点：
+//   1. maxCount 构造时可配置
+//   2. 用指针代替 shift()，避免 O(n) 移动
+//   3. finally 释放槽位，防止任务失败时槽位泄漏
+//   4. add 时自动触发，支持动态添加任务，无需 taskStart
+// ─────────────────────────────────────────────
+class Scheduler2 {
+  constructor(maxCount = 2) {
+    this.queue = [];
+    this.index = 0;       // 指针：代替 shift()
+    this.maxCount = maxCount;
+    this.runCounts = 0;
+  }
+
+  add(promiseCreator) {
+    this.queue.push(promiseCreator);
+    this.request(); // 每次 add 直接尝试触发，无需手动 taskStart
+  }
+
+  request() {
+    if (this.index >= this.queue.length || this.runCounts >= this.maxCount) {
+      return;
+    }
+    this.runCounts++;
+    const task = this.queue[this.index++]; // 指针前移，不做数组移位
+    task().finally(() => {                 // finally 确保无论成功失败都释放槽位
+      this.runCounts--;
+      this.request();
+    });
+  }
+}
+
+const scheduler2 = new Scheduler2(2);
+
+const addTask2 = (time, order) => {
+  scheduler2.add(() => timeout(time).then(() => console.log(order)));
+};
+
+addTask2(1000, '1');
+addTask2(500, '2');
+addTask2(300, '3');
+addTask2(400, '4');
